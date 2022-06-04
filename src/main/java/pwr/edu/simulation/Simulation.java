@@ -1,16 +1,19 @@
 package pwr.edu.simulation;
 
+import pwr.edu.map.CellState;
+import pwr.edu.map.Map;
 import pwr.edu.population.Person;
 import pwr.edu.virus.Virus;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
-import java.util.Vector;
 
 public class Simulation {
     SimulationParameters parameters;
     Random rand = new Random();
-    Vector<Person> people = new Vector<Person>();
-    char map[][];
+    List<Person> people = new ArrayList<Person>();
+    Map map;
     Simulation(SimulationParameters params)
     {
         this.parameters = params;
@@ -19,18 +22,10 @@ public class Simulation {
             people.add(new Person(parameters.getMapSize()));
         }
 
-        people.elementAt(0).createFirstVirus(new Virus(parameters.getVirusMutability(),
+        people.get(0).createFirstVirus(new Virus(parameters.getVirusMutability(),
                 parameters.getStartingVirusInfectivity(), parameters.getStartingVirusDeadliness()));
 
-        map = new char[parameters.getMapSize()][parameters.getMapSize()];
-
-        for (char[] row : map)
-        {
-            for (char cell : row)
-            {
-                cell = ' ';
-            }
-        }
+        map = new Map(params.getMapSize());
     }
 
     public void runSimulation()
@@ -45,17 +40,28 @@ public class Simulation {
     {
         updatePeople();
         updateMap();
-        printMap();
     }
 
     private void updatePeople() {
-        Vector<Person> tempPeople = new Vector<Person>();
+        List<Person> tempPeople = new ArrayList<Person>();
         for (Person person : people)
         {
-            if (!person.update(parameters))
+            if (person.getImmunity() > 0.9f) {
+                person.setImmunity(person.getImmunity() - .02f);
+            }
+
+            if (person.getHealthiness() < rand.nextFloat())
             {
-                continue;
-            } else {
+                person.setAlive(false);
+            } else if (person.getHealthiness() > rand.nextFloat() + 0.9)
+            {
+                person.recoverFromSickness();
+            }
+
+            person.move(parameters.getMapSize());
+
+            if (person.isAlive())
+            {
                 tempPeople.add(person);
             }
 
@@ -90,33 +96,15 @@ public class Simulation {
 
     private void updateMap()
     {
-        for (int row = 0; row < map.length; row++)
-        {
-            for (int column = 0; column < map[row].length; column++)
-            {
-                map[row][column] = ' ';
-            }
-        }
+        map.clearMap();
+
         for (Person person : people)
         {
             if (person.isInfected()) {
-                map[person.getPosition().y][person.getPosition().x] = 'x';
+                map.setCellState(person.getPosition(), CellState.INFECTED_PERSON);
             } else {
-                map[person.getPosition().y][person.getPosition().x] = 'o';
+                map.setCellState(person.getPosition(), CellState.HEALTHY_PERSON);
             }
         }
-    }
-
-    private void printMap()
-    {
-        for (int row = 0; row < map.length; row++)
-        {
-            for (int column = 0; column < map[row].length; column++)
-            {
-                System.out.print(map[row][column]);
-            }
-            System.out.println();
-        }
-        System.out.println("---------------------------------------");
     }
 }

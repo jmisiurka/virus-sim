@@ -1,9 +1,8 @@
 package pwr.edu.population;
 
-import pwr.edu.simulation.SimulationParameters;
 import pwr.edu.virus.Virus;
+import pwr.edu.map.Point;
 
-import java.awt.*;
 import java.util.Random;
 
 public class Person {
@@ -16,6 +15,7 @@ public class Person {
 
     static Random rand = new Random();
     protected Point position = new Point();
+    private boolean alive = true;
     protected float healthiness;
     protected float immunity;
     protected float activeness;
@@ -29,32 +29,14 @@ public class Person {
         position.y = rand.nextInt(mapSize);
     }
 
-    public boolean update(SimulationParameters params) {
-        if (this.immunity > 0.9f) {
-            this.immunity -= 0.02f;
-        }
-
-        if (this.healthiness < rand.nextFloat())
-        {
-            die();
-            return false;
-        } else if (this.healthiness > rand.nextFloat() + 0.9)
-        {
-            recoverFromSickness();
-        }
-
-        position = move(params.getMapSize());
-        return true;
-    }
-
     private void die() {
         virus = null;
     }
 
-    protected Point move(int mapSize) {
+    public void move(int mapSize) {
         if (activeness < rand.nextFloat())
         {
-            return position;
+            return;
         }
         boolean moved = false;
         while (!moved) {
@@ -88,7 +70,6 @@ public class Person {
                     break;
             }
         }
-        return position;
     }
 
     public void spreadVirus(Person person) {
@@ -101,7 +82,7 @@ public class Person {
         this.virus = new Virus(this.virus);
     }
 
-    protected void recoverFromSickness() {
+    public void recoverFromSickness() {
         this.virus = null;
         this.immunity += 0.3f;
     }
@@ -122,12 +103,36 @@ public class Person {
         return activeness;
     }
 
+    public void setPosition(Point position) {
+        this.position = position;
+    }
+
+    public void setHealthiness(float healthiness) {
+        this.healthiness = healthiness;
+    }
+
+    public void setImmunity(float immunity) {
+        this.immunity = immunity;
+    }
+
+    public void setActiveness(float activeness) {
+        this.activeness = activeness;
+    }
+
     public boolean isInfected() {
         if (virus != null) {
             return true;
         } else {
             return false;
         }
+    }
+
+    public boolean isAlive() {
+        return alive;
+    }
+
+    public void setAlive(boolean alive) {
+        this.alive = alive;
     }
 
     public void createFirstVirus(Virus virus)

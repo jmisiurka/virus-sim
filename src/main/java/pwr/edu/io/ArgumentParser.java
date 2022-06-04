@@ -1,5 +1,6 @@
 package pwr.edu.io;
 
+import pwr.edu.population.PersonParameters;
 import pwr.edu.simulation.SimulationParameters;
 
 public class ArgumentParser {
@@ -15,4 +16,9 @@ public class ArgumentParser {
         return new SimulationParameters(elderPercentage, mapSize, populationDensity, virusMutability,
                 startingVirusInfectivity, startingVirusDeadliness);
     }
+
+//    public PersonParameters parsePersonParameters()
+//    {
+//
+//    }
 }
