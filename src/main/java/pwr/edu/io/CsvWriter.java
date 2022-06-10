@@ -1,7 +1,14 @@
 package pwr.edu.io;
 
-public class CsvWriter {
-    public void saveState() {
+import pwr.edu.simulation.SimulationState;
 
+import java.util.List;
+
+public class CsvWriter {
+    public void saveState(List<SimulationState> states) {
+        for (SimulationState state : states)
+
+
+        }
     }
 }

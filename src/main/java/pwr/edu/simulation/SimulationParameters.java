@@ -1,9 +1,8 @@
 package pwr.edu.simulation;
 
 public class SimulationParameters {
-    public SimulationParameters(int elderPercentage, int mapSize, float populationDensity,
+    public SimulationParameters(int mapSize, float populationDensity,
                                 float virusMutability, float startingVirusInfectivity, float startingVirusDeadliness) {
-        this.elderPercentage = elderPercentage; //0-100
         this.mapSize = mapSize;
         this.populationDensity = populationDensity; // people/9 squares
         this.virusMutability = virusMutability;
@@ -11,16 +10,11 @@ public class SimulationParameters {
         this.startingVirusDeadliness = startingVirusDeadliness;
     }
 
-    private int elderPercentage;
-    private int mapSize;
-    private float populationDensity;
-    private float virusMutability;
-    private float startingVirusInfectivity;
-    private float startingVirusDeadliness;
-
-    public int getElderPercentage() {
-        return elderPercentage;
-    }
+    private final int mapSize;
+    private final float populationDensity;
+    private final float virusMutability;
+    private final float startingVirusInfectivity;
+    private final float startingVirusDeadliness;
 
     public int getMapSize() {
         return mapSize;

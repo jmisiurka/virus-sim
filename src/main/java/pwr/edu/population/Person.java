@@ -6,25 +6,19 @@ import pwr.edu.map.Point;
 import java.util.Random;
 
 public class Person {
-    private static float minimumHealthiness = 0.95f;
-    private static float minimumImmunity = 0.3f;
-    private static float minimumActiveness = 0.2f;
-    private static float maximumHealthiness = 0.99f;
-    private static float maximumImmunity = 0.8f;
-    private static float maximumActiveness = 1.0f;
-
-    static Random rand = new Random();
-    protected Point position = new Point();
+    private static Random rand = new Random();
+    private static PersonParameters personParameters;
+    private Point position = new Point();
     private boolean alive = true;
-    protected float healthiness;
-    protected float immunity;
-    protected float activeness;
+    private float healthiness;
+    private float immunity;
+    private float activeness;
     private Virus virus;
 
     public Person(int mapSize) {
-        this.healthiness = minimumHealthiness + rand.nextFloat() * (maximumHealthiness - minimumHealthiness);
-        this.immunity = minimumImmunity + rand.nextFloat() * (maximumImmunity - minimumImmunity);
-        this.activeness = minimumActiveness + rand.nextFloat() * (maximumActiveness - minimumActiveness);
+        this.healthiness = personParameters.getMinimumHealthiness() + rand.nextFloat() * (personParameters.getMaximumHealthiness() - personParameters.getMinimumHealthiness());
+        this.immunity = personParameters.getMinimumImmunity() + rand.nextFloat() * (personParameters.getMaximumImmunity() - personParameters.getMinimumImmunity());
+        this.activeness = personParameters.getMinimumActiveness() + rand.nextFloat() * (personParameters.getMaximumActiveness() - personParameters.getMinimumActiveness());
         position.x = rand.nextInt(mapSize);
         position.y = rand.nextInt(mapSize);
     }
@@ -97,6 +91,10 @@ public class Person {
 
     public float getImmunity() {
         return immunity;
+    }
+
+    public static void setPersonParameters(PersonParameters personParameters) {
+        Person.personParameters = personParameters;
     }
 
     public float getActiveness() {

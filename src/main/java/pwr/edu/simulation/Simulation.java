@@ -10,22 +10,23 @@ import java.util.List;
 import java.util.Random;
 
 public class Simulation {
+    List<SimulationState> states;
+    SimulationState currentState;
     SimulationParameters parameters;
     Random rand = new Random();
-    List<Person> people = new ArrayList<Person>();
-    Map map;
+
     Simulation(SimulationParameters params)
     {
         this.parameters = params;
         for (int i = 0; i < params.getMapSize() * parameters.getPopulationDensity(); i++)
         {
-            people.add(new Person(parameters.getMapSize()));
+            currentState.people.add(new Person(parameters.getMapSize()));
         }
 
-        people.get(0).createFirstVirus(new Virus(parameters.getVirusMutability(),
+        currentState.people.get(0).createFirstVirus(new Virus(parameters.getVirusMutability(),
                 parameters.getStartingVirusInfectivity(), parameters.getStartingVirusDeadliness()));
 
-        map = new Map(params.getMapSize());
+        currentState.map = new Map(params.getMapSize());
     }
 
     public void runSimulation()
@@ -44,7 +45,7 @@ public class Simulation {
 
     private void updatePeople() {
         List<Person> tempPeople = new ArrayList<Person>();
-        for (Person person : people)
+        for (Person person : currentState.people)
         {
             if (person.getImmunity() > 0.9f) {
                 person.setImmunity(person.getImmunity() - .02f);
@@ -65,7 +66,7 @@ public class Simulation {
                 tempPeople.add(person);
             }
 
-            for (Person otherPerson : people)
+            for (Person otherPerson : currentState.people)
             {
                 if (Math.abs(person.getPosition().x - otherPerson.getPosition().x) <= 1 &&
                         Math.abs(person.getPosition().y - otherPerson.getPosition().y) <= 1)
@@ -74,36 +75,24 @@ public class Simulation {
                 }
             }
         }
-        people = tempPeople;
+        currentState.people = tempPeople;
     }
 
     private boolean checkSimulation()
     {
-        boolean virusExists = false;
-        if (people.isEmpty())
-        {
-            return false;
-        }
-        for (Person person : people)
-        {
-            if (person.isInfected())
-            {
-                return true;
-            }
-        }
-        return false;
+        return !currentState.people.isEmpty() && currentState.people.stream().anyMatch(Person::isInfected);
     }
 
     private void updateMap()
     {
-        map.clearMap();
+        currentState.map.clearMap();
 
-        for (Person person : people)
+        for (Person person : currentState.people)
         {
             if (person.isInfected()) {
-                map.setCellState(person.getPosition(), CellState.INFECTED_PERSON);
+                currentState.map.setCellState(person.getPosition(), CellState.INFECTED_PERSON);
             } else {
-                map.setCellState(person.getPosition(), CellState.HEALTHY_PERSON);
+                currentState.map.setCellState(person.getPosition(), CellState.HEALTHY_PERSON);
             }
         }
     }

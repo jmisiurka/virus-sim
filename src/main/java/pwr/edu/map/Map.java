@@ -1,7 +1,5 @@
 package pwr.edu.map;
 
-import java.util.logging.Logger;
-
 public class Map {
     private final int size;
     private CellState tiles[][];
