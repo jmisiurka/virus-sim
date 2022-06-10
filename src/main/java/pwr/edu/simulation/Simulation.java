@@ -3,6 +3,7 @@ package pwr.edu.simulation;
 import pwr.edu.map.CellState;
 import pwr.edu.map.Map;
 import pwr.edu.population.Person;
+import pwr.edu.population.PersonCreator;
 import pwr.edu.virus.Virus;
 
 import java.util.ArrayList;
@@ -10,23 +11,18 @@ import java.util.List;
 import java.util.Random;
 
 public class Simulation {
-    List<SimulationState> states;
+    List<SimulationState> states = new ArrayList<>();
     SimulationState currentState;
     SimulationParameters parameters;
+    PersonCreator personCreator;
     Random rand = new Random();
 
-    Simulation(SimulationParameters params)
+    Simulation(SimulationParameters params, SimulationState initialState)
     {
         this.parameters = params;
-        for (int i = 0; i < params.getMapSize() * parameters.getPopulationDensity(); i++)
-        {
-            currentState.people.add(new Person(parameters.getMapSize()));
-        }
 
-        currentState.people.get(0).createFirstVirus(new Virus(parameters.getVirusMutability(),
-                parameters.getStartingVirusInfectivity(), parameters.getStartingVirusDeadliness()));
-
-        currentState.map = new Map(params.getMapSize());
+        currentState = initialState;
+        currentState.map = new Map(parameters.getMapSize());
     }
 
     public void runSimulation()
@@ -34,6 +30,7 @@ public class Simulation {
         while (checkSimulation())
         {
             simulationStep();
+            currentState = new SimulationState(currentState.people, currentState.map);
         }
     }
 
@@ -41,6 +38,8 @@ public class Simulation {
     {
         updatePeople();
         updateMap();
+        currentState.map.printMap();
+        states.add(currentState);
     }
 
     private void updatePeople() {

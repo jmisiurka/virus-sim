@@ -10,17 +10,17 @@ import java.io.IOException;
 public class ArgumentParser {
     public SimulationParameters parseArguments(String[] args)
     {
-        int mapSize = Integer.parseInt(args[1]);
-        float populationDensity = Float.parseFloat(args[2]);
-        float virusMutability = Float.parseFloat(args[3]);
-        float startingVirusInfectivity = Float.parseFloat(args[4]);
-        float startingVirusDeadliness = Float.parseFloat(args[5]);
+        int mapSize = Integer.parseInt(args[0]);
+        float populationDensity = Float.parseFloat(args[1]);
+        float virusMutability = Float.parseFloat(args[2]);
+        float startingVirusInfectivity = Float.parseFloat(args[3]);
+        float startingVirusDeadliness = Float.parseFloat(args[4]);
 
         return new SimulationParameters(mapSize, populationDensity, virusMutability,
                 startingVirusInfectivity, startingVirusDeadliness);
     }
 
-    public static PersonParameters parsePersonParameters(String confFilePath) throws IOException {
+    public PersonParameters parsePersonParameters(String confFilePath) throws IOException {
         float minimumHealthiness = 0;
         float minimumImmunity = 0;
         float minimumActiveness = 0;

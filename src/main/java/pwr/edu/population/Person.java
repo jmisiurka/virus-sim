@@ -7,21 +7,12 @@ import java.util.Random;
 
 public class Person {
     private static Random rand = new Random();
-    private static PersonParameters personParameters;
     private Point position = new Point();
     private boolean alive = true;
     private float healthiness;
     private float immunity;
     private float activeness;
     private Virus virus;
-
-    public Person(int mapSize) {
-        this.healthiness = personParameters.getMinimumHealthiness() + rand.nextFloat() * (personParameters.getMaximumHealthiness() - personParameters.getMinimumHealthiness());
-        this.immunity = personParameters.getMinimumImmunity() + rand.nextFloat() * (personParameters.getMaximumImmunity() - personParameters.getMinimumImmunity());
-        this.activeness = personParameters.getMinimumActiveness() + rand.nextFloat() * (personParameters.getMaximumActiveness() - personParameters.getMinimumActiveness());
-        position.x = rand.nextInt(mapSize);
-        position.y = rand.nextInt(mapSize);
-    }
 
     private void die() {
         virus = null;
@@ -91,10 +82,6 @@ public class Person {
 
     public float getImmunity() {
         return immunity;
-    }
-
-    public static void setPersonParameters(PersonParameters personParameters) {
-        Person.personParameters = personParameters;
     }
 
     public float getActiveness() {

@@ -12,24 +12,31 @@ public class SimulationState {
     private int infectedPeople;
     Map map;
 
-    public SimulationState(List<Person> people) {
+    public SimulationState(List<Person> people, Map map) {
         this.people = people;
+        this.map = map;
+        infectedPeople = countInfected();
+        healthyPeople = people.size() - infectedPeople;
     }
 
     public int getHealthyPeople() {
         return healthyPeople;
     }
 
-    public void setHealthyPeople(int healthyPeople) {
-        this.healthyPeople = healthyPeople;
-    }
-
     public int getInfectedPeople() {
         return infectedPeople;
     }
 
-    public void setInfectedPeople(int infectedPeople) {
-        this.infectedPeople = infectedPeople;
+    private int countInfected() {
+        int counter = 0;
+        for (Person person : people)
+        {
+            if (person.isInfected())
+            {
+                counter++;
+            }
+        }
+        return counter;
     }
 
     public Map getMap() {

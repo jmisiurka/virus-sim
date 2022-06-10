@@ -1,14 +1,13 @@
 package pwr.edu.virus;
 
+import java.util.Random;
+
 public class Virus {
-    private static float mutability;
+    private float mutability;
     private float infectivity;
     private float deadliness;
-
-    public Virus()
-    {
-
-    }
+    private int age;
+    private static Random rand = new Random();
 
     public Virus(float mutability, float infectivity, float deadliness)
     {
@@ -22,5 +21,7 @@ public class Virus {
     }
 
     private void mutate() {
+        infectivity += mutability * (2 * rand.nextFloat() - 1);
+        deadliness += mutability * (2 * rand.nextFloat() - 1);
     }
 }
