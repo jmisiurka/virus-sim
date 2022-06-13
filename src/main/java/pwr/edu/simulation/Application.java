@@ -2,8 +2,9 @@ package pwr.edu.simulation;
 
 import pwr.edu.io.ArgumentParser;
 import pwr.edu.io.CsvWriter;
-import pwr.edu.population.Person;
 import pwr.edu.population.PersonCreator;
+
+import java.util.List;
 
 public class Application {
     static private ArgumentParser argumentParser = new ArgumentParser();
@@ -22,6 +23,7 @@ public class Application {
         SimulationState initialState = SimulationCreator.createSimulation(params);
         Simulation simulation = new Simulation(params, initialState);
 
-        simulation.runSimulation();
+        List<SimulationState> outputStates = simulation.runSimulation();
+        csvWriter.saveStates(outputStates);
     }
 }

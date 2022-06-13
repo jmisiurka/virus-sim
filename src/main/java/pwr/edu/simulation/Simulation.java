@@ -4,7 +4,6 @@ import pwr.edu.map.CellState;
 import pwr.edu.map.Map;
 import pwr.edu.population.Person;
 import pwr.edu.population.PersonCreator;
-import pwr.edu.virus.Virus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +13,6 @@ public class Simulation {
     List<SimulationState> states = new ArrayList<>();
     SimulationState currentState;
     SimulationParameters parameters;
-    PersonCreator personCreator;
     Random rand = new Random();
 
     Simulation(SimulationParameters params, SimulationState initialState)
@@ -25,13 +23,14 @@ public class Simulation {
         currentState.map = new Map(parameters.getMapSize());
     }
 
-    public void runSimulation()
+    public List<SimulationState> runSimulation()
     {
         while (checkSimulation())
         {
             simulationStep();
             currentState = new SimulationState(currentState.people, currentState.map);
         }
+        return states;
     }
 
     private void simulationStep()
@@ -50,10 +49,10 @@ public class Simulation {
                 person.setImmunity(person.getImmunity() - .02f);
             }
 
-            if (person.getHealthiness() < rand.nextFloat())
+            if (person.isInfected() && person.getHealthiness() < rand.nextFloat())
             {
                 person.setAlive(false);
-            } else if (person.getHealthiness() > rand.nextFloat() + 0.9)
+            } else if (person.isInfected() && person.getHealthiness() > rand.nextFloat() + 0.9)
             {
                 person.recoverFromSickness();
             }
