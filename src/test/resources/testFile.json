@@ -1,0 +1,8 @@
+{
+  "minimumHealthiness": 14,
+  "minimumImmunity": 12.9,
+  "minimumActiveness": 3.2,
+  "maximumHealthiness": 4.99,
+  "maximumImmunity": 4.8,
+  "maximumActiveness": 2.1
+}
