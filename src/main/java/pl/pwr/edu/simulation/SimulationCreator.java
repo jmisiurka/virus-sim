@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SimulationCreator {
-    public static SimulationState createSimulation(SimulationParameters parameters, PersonCreator personCreator) {
+    public SimulationState createSimulation(SimulationParameters parameters, PersonCreator personCreator) {
         List<Person> people = new ArrayList<>();
 
         for (int i = 0; i < parameters.getMapSize() * parameters.getMapSize() * parameters.getPopulationDensity(); i++)
