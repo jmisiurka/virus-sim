@@ -1,17 +1,16 @@
 package pl.pwr.edu.simulation;
 
+import pl.pwr.edu.population.Person;
 import pl.pwr.edu.population.PersonCreator;
 import pl.pwr.edu.map.Map;
-import pl.pwr.edu.population.Person;
 import pl.pwr.edu.virus.Virus;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SimulationCreator {
-    public static SimulationState createSimulation(SimulationParameters parameters) {
+    public static SimulationState createSimulation(SimulationParameters parameters, PersonCreator personCreator) {
         List<Person> people = new ArrayList<>();
-        PersonCreator personCreator = new PersonCreator();
 
         for (int i = 0; i < parameters.getMapSize() * parameters.getMapSize() * parameters.getPopulationDensity(); i++)
         {

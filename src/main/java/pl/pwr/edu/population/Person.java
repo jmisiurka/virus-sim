@@ -1,70 +1,24 @@
 package pl.pwr.edu.population;
 
-import pl.pwr.edu.virus.Virus;
 import pl.pwr.edu.map.Point;
+import pl.pwr.edu.virus.Virus;
 
+import java.util.List;
 import java.util.Random;
 
-public class Person {
-    private static final Random rand = new Random();
-    private Point position = new Point();
-    private boolean alive = true;
-    private float healthiness;
-    private float immunity;
-    private float activeness;
-    private Virus virus;
+public abstract class Person {
+    protected static final Random rand = new Random();
+    protected Point position = new Point();
+    protected boolean alive = true;
+    protected float healthiness;
+    protected float immunity;
+    protected float activeness;
+    protected Virus virus;
 
-    private void die() {
-        virus = null;
-    }
-
-    public void move(int mapSize) {
-        if (activeness < rand.nextFloat())
-        {
-            return;
-        }
-        boolean moved = false;
-        while (!moved) {
-            int direction = rand.nextInt(5);
-            switch (direction) {
-                case 1:
-                    if (position.x < mapSize - 1) {
-                        position.x++;
-                        moved = true;
-                    }
-                    break;
-                case 2:
-                    if (position.y < mapSize - 1) {
-                        position.y++;
-                        moved = true;
-                    }
-                    break;
-                case 3:
-                    if (position.x > 0) {
-                        position.x--;
-                        moved = true;
-                    }
-                    break;
-                case 4:
-                    if (position.y > 0) {
-                        position.y--;
-                        moved = true;
-                    }
-                    break;
-                default:
-                    break;
-            }
-        }
-    }
+    public abstract void move(int mapSize, Person closestPerson);
 
     public void spreadVirus(Person person) {
-        if (this.isInfected() && person.getImmunity() < new Random().nextFloat()) {
-            person.infect();
-        }
-    }
-
-    protected void infect() {
-        this.virus = new Virus(this.virus);
+        person.virus = new Virus(this.virus);
     }
 
     public void recoverFromSickness() {
@@ -72,40 +26,21 @@ public class Person {
         this.immunity += 0.3f;
     }
 
+    public boolean isInfected() {
+        return virus != null;
+    }
+
+    public void createFirstVirus(Virus virus)
+    {
+        this.virus = virus;
+    }
+
     public Point getPosition() {
         return position;
     }
 
-    public float getHealthiness() {
-        return healthiness;
-    }
-
-    public float getImmunity() {
-        return immunity;
-    }
-
-    public float getActiveness() {
-        return activeness;
-    }
-
     public void setPosition(Point position) {
         this.position = position;
-    }
-
-    public void setHealthiness(float healthiness) {
-        this.healthiness = healthiness;
-    }
-
-    public void setImmunity(float immunity) {
-        this.immunity = immunity;
-    }
-
-    public void setActiveness(float activeness) {
-        this.activeness = activeness;
-    }
-
-    public boolean isInfected() {
-        return virus != null;
     }
 
     public boolean isAlive() {
@@ -116,8 +51,41 @@ public class Person {
         this.alive = alive;
     }
 
-    public void createFirstVirus(Virus virus)
-    {
-        this.virus = virus;
+    public float getHealthiness() {
+        return healthiness;
+    }
+
+    public void setHealthiness(float healthiness) {
+        this.healthiness = healthiness;
+    }
+
+    public float getImmunity() {
+        return immunity;
+    }
+
+    public void setImmunity(float immunity) {
+        this.immunity = immunity;
+    }
+
+    public void setActiveness(float activeness) {
+        this.activeness = activeness;
+    }
+
+    public Virus getVirus() {
+        return virus;
+    }
+
+    public Person findClosestPerson(List<Person> people) {
+        float smallestDistance = Float.MAX_VALUE;
+        Person closestPerson = null;
+        for (Person person : people)
+        {
+            if (this.position.getDistance(person.getPosition()) < smallestDistance)
+            {
+                closestPerson = person;
+            }
+        }
+
+        return closestPerson;
     }
 }

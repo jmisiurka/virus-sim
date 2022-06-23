@@ -16,7 +16,7 @@ dependencies {
 }
 
 application {
-    mainClass = 'pwr.edu.simulation.Application'
+    mainClass = 'pl.pwr.edu.simulation.Application'
 }
 
 test {

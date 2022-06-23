@@ -2,6 +2,7 @@ package pl.pwr.edu.simulation;
 
 import pl.pwr.edu.map.CellState;
 import pl.pwr.edu.map.Map;
+import pl.pwr.edu.population.AmbivertPerson;
 import pl.pwr.edu.population.Person;
 
 import java.util.ArrayList;
@@ -36,7 +37,7 @@ public class Simulation {
     {
         updatePeople();
         updateMap();
-        currentState.map.printMap();
+        //currentState.map.printMap();
         states.add(currentState);
     }
 
@@ -44,11 +45,11 @@ public class Simulation {
         List<Person> tempPeople = new ArrayList<>();
         for (Person person : currentState.people)
         {
-            if (person.getImmunity() > 0.9f) {
+            if (person.getImmunity() > 0.8f) {
                 person.setImmunity(person.getImmunity() - .02f);
             }
 
-            if (person.isInfected() && person.getHealthiness() < rand.nextFloat())
+            if (person.isInfected() && person.getHealthiness() < person.getVirus().getDeadliness() * rand.nextFloat())
             {
                 person.setAlive(false);
             } else if (person.isInfected() && person.getHealthiness() > rand.nextFloat() + 0.9)
@@ -56,18 +57,19 @@ public class Simulation {
                 person.recoverFromSickness();
             }
 
-            person.move(parameters.getMapSize());
+            person.move(parameters.getMapSize(), person.findClosestPerson(currentState.people));
 
             if (person.isAlive())
             {
                 tempPeople.add(person);
             }
 
-            for (Person otherPerson : currentState.people)
-            {
-                if (otherPerson.getPosition().getDistance(person.getPosition()) < 2.f)
-                {
-                    person.spreadVirus(otherPerson);
+            if (person.isInfected()) {
+                for (Person otherPerson : currentState.people) {
+                    if (person != otherPerson && otherPerson.getPosition().getDistance(person.getPosition()) < 2.f &&
+                            otherPerson.getImmunity() < person.getVirus().getInfectivity()) {
+                        person.spreadVirus(otherPerson);
+                    }
                 }
             }
         }

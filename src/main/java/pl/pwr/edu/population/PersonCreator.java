@@ -5,16 +5,29 @@ import pl.pwr.edu.map.Point;
 import java.util.Random;
 
 public class PersonCreator {
-    private static PersonParameters personParameters;
-    private static final Random rand = new Random();
+    private PersonParameters personParameters;
+    private final Random rand = new Random();
 
-    public static void setPersonParameters(PersonParameters personParameters) {
-        PersonCreator.personParameters = personParameters;
+    public void setPersonParameters(PersonParameters personParameters) {
+        this.personParameters = personParameters;
     }
 
     public Person createPerson(int mapSize)
     {
-        Person person = new Person();
+        float personType = rand.nextFloat();
+        Person person;
+
+        if (personType <= personParameters.getIntrovertProbability())
+        {
+            person = new IntrovertPerson();
+        } else if (personType > personParameters.getIntrovertProbability() &&
+                personType < personParameters.getExtrovertProbability() + personParameters.getIntrovertProbability())
+        {
+            person = new ExtrovertPerson();
+        } else {
+            person = new AmbivertPerson();
+        }
+
         person.setHealthiness(personParameters.getMinimumHealthiness() + rand.nextFloat() * (personParameters.getMaximumHealthiness() - personParameters.getMinimumHealthiness()));
         person.setImmunity(personParameters.getMinimumImmunity() + rand.nextFloat() * (personParameters.getMaximumImmunity() - personParameters.getMinimumImmunity()));
         person.setActiveness(personParameters.getMinimumActiveness() + rand.nextFloat() * (personParameters.getMaximumActiveness() - personParameters.getMinimumActiveness()));

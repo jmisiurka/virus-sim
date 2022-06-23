@@ -27,6 +27,8 @@ public class ArgumentParser {
         float maximumHealthiness = 0;
         float maximumImmunity = 0;
         float maximumActiveness = 0;
+        float extrovertProbability = 0;
+        float introvertProbability = 0;
         JsonReader reader = new JsonReader(new FileReader(confFilePath));
         reader.beginObject();
 
@@ -52,6 +54,12 @@ public class ArgumentParser {
                 case "maximumActiveness":
                     maximumActiveness = (float) reader.nextDouble();
                     break;
+                case "extrovertProbability":
+                    extrovertProbability = (float) reader.nextDouble() / 100.f;
+                    break;
+                case "introvertProbability":
+                    introvertProbability = (float) reader.nextDouble() / 100.f;
+                    break;
                 default:
                     reader.skipValue();
                     break;
@@ -61,6 +69,6 @@ public class ArgumentParser {
         reader.endObject();
 
         return new PersonParameters(minimumHealthiness, minimumImmunity, minimumActiveness,
-                maximumHealthiness, maximumImmunity, maximumActiveness);
+                maximumHealthiness, maximumImmunity, maximumActiveness, extrovertProbability, introvertProbability);
     }
 }

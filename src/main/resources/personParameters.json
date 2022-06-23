@@ -4,5 +4,7 @@
   "minimumActiveness": 0.2,
   "maximumHealthiness": 0.99,
   "maximumImmunity": 0.8,
-  "maximumActiveness": 1
+  "maximumActiveness": 1,
+  "extrovertProbability": 15,
+  "introvertProbability": 40
 }

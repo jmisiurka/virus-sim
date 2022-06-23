@@ -3,7 +3,6 @@ package pl.pwr.edu.simulation;
 import pl.pwr.edu.map.Map;
 import pl.pwr.edu.population.Person;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SimulationState {

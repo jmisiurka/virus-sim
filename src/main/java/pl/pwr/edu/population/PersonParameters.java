@@ -7,26 +7,21 @@ public class PersonParameters {
     private final float maximumHealthiness;
     private final float maximumImmunity;
     private final float maximumActiveness;
+    private final float extrovertProbability;
+    private final float introvertProbability;
 
     public PersonParameters(float minimumHealthiness, float minimumImmunity, float minimumActiveness,
-                            float maximumHealthiness, float maximumImmunity, float maximumActiveness) {
+                            float maximumHealthiness, float maximumImmunity, float maximumActiveness,
+                            float extrovertPercentage, float introvertPercentage) {
         this.minimumHealthiness = minimumHealthiness;
         this.minimumImmunity = minimumImmunity;
         this.minimumActiveness = minimumActiveness;
         this.maximumHealthiness = maximumHealthiness;
         this.maximumImmunity = maximumImmunity;
         this.maximumActiveness = maximumActiveness;
+        this.extrovertProbability = extrovertPercentage;
+        this.introvertProbability = introvertPercentage;
     }
-
-//    public static void setParameters(float minimumHealthiness, float minimumImmunity, float minimumActiveness,
-//                                     float maximumHealthiness, float maximumImmunity, float maximumActiveness) {
-//        PersonParameters.minimumHealthiness = minimumHealthiness;
-//        PersonParameters.minimumImmunity = minimumImmunity;
-//        PersonParameters.minimumActiveness = minimumActiveness;
-//        PersonParameters.maximumHealthiness = maximumHealthiness;
-//        PersonParameters.maximumImmunity = maximumImmunity;
-//        PersonParameters.maximumActiveness = maximumActiveness;
-//    }
 
     public float getMinimumHealthiness() {
         return minimumHealthiness;
@@ -50,5 +45,13 @@ public class PersonParameters {
 
     public float getMaximumActiveness() {
         return maximumActiveness;
+    }
+
+    public float getExtrovertProbability() {
+        return extrovertProbability;
+    }
+
+    public float getIntrovertProbability() {
+        return introvertProbability;
     }
 }
